@@ -80,6 +80,7 @@ export default function CallbackPage() {
         localStorage.setItem("linkedin_user_urn", userData.urn);
         localStorage.setItem("linkedin_user_name", userData.name || "");
         localStorage.setItem("linkedin_user_email", userData.email || "");
+        localStorage.setItem("linkedin_user_picture", userData.picture || "");
 
         if (tokenData.refresh_token) {
           localStorage.setItem("linkedin_refresh_token", tokenData.refresh_token);

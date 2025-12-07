@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Linkedin, LogOut } from "lucide-react";
 import { LinkedInLoginButton } from "@/components/linkedin/login_button";
-import { TokenDisplay } from "@/components/linkedin/token_display";
+import { ProfileCard } from "@/components/linkedin/profile_card";
+import { StatsCard } from "@/components/linkedin/stats_card";
 import { PostForm } from "@/components/linkedin/post_form";
 
 interface LinkedInData {
@@ -11,6 +12,8 @@ interface LinkedInData {
   refreshToken: string | null;
   userUrn: string;
   userName: string;
+  userEmail: string | null;
+  userPicture: string | null;
   expiresIn: string;
 }
 
@@ -24,6 +27,8 @@ export default function Home() {
     const refreshToken = localStorage.getItem("linkedin_refresh_token");
     const userUrn = localStorage.getItem("linkedin_user_urn");
     const userName = localStorage.getItem("linkedin_user_name");
+    const userEmail = localStorage.getItem("linkedin_user_email");
+    const userPicture = localStorage.getItem("linkedin_user_picture");
     const expiresIn = localStorage.getItem("linkedin_expires_in");
 
     if (accessToken && userUrn) {
@@ -32,6 +37,8 @@ export default function Home() {
         refreshToken,
         userUrn,
         userName: userName || "Utilisateur LinkedIn",
+        userEmail: userEmail || null,
+        userPicture: userPicture || null,
         expiresIn: expiresIn || "0",
       });
     }
@@ -45,6 +52,7 @@ export default function Home() {
     localStorage.removeItem("linkedin_user_urn");
     localStorage.removeItem("linkedin_user_name");
     localStorage.removeItem("linkedin_user_email");
+    localStorage.removeItem("linkedin_user_picture");
     localStorage.removeItem("linkedin_expires_in");
     setLinkedInData(null);
   };
@@ -99,14 +107,17 @@ export default function Home() {
         ) : (
           // État connecté
           <div className="space-y-6">
-            {/* Affichage des tokens */}
-            <TokenDisplay
+            {/* Carte profil utilisateur */}
+            <ProfileCard
               userUrn={linkedInData.userUrn}
               userName={linkedInData.userName}
-              accessToken={linkedInData.accessToken}
-              refreshToken={linkedInData.refreshToken}
+              userEmail={linkedInData.userEmail}
+              userPicture={linkedInData.userPicture}
               expiresIn={linkedInData.expiresIn}
             />
+
+            {/* Statistiques LinkedIn */}
+            <StatsCard userName={linkedInData.userName} />
 
             {/* Séparateur */}
             <div className="relative">
